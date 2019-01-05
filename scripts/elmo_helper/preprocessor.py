@@ -25,6 +25,8 @@ def preprocess(directory, save_directory, notify_multiplier=100):
         text = f_read_file.read().lower()
 
         tokenized = nltk.tokenize.sent_tokenize(text)
+        tokenized_words = (nltk.tokenize.casual.casual_tokenize(l) for l in tokenized)
+        tokenized = [" ".join(l) for l in tokenized_words]
         
         random.shuffle(tokenized)
         for sent in tokenized:
