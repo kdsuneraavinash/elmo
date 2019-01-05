@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
 import collections
-import nltk
+import spacy
 import os
 """
 @author: Sunera
 """
 
+nlp = None
 print("# Initializing vocab file creater")
 
 
-def create_vocab_file(source_directory='train', output_vocab_file='vocab.txt', batch_size=500):
+def create_vocab_file(_nlp, source_directory='train', output_vocab_file='vocab.txt', batch_size=500):
     """
     Creates a vocab file using source directory.
     Batch size determines how much lines to load at once. (Does not affect much)
     """
+    global nlp
+    nlp = _nlp
     unsorted_words, max_word_length = count_words(source_directory, batch_size)
 
     all_counted = sort(unsorted_words)
@@ -34,30 +37,19 @@ def count_words(directory, batch_size):
     counter = collections.Counter()
     max_word_length = 1
 
-    current_batch_size = 0
-    current_batch = 1
-    batch_text = ""
     for train_file in os.listdir(directory):
         with open('{}/{}'.format(directory, train_file), 'r', encoding="utf-8", errors='ignore') as f:
-            while True:
-                line = f.readline().lower()
-                if line == "":
-                    break  # EOF
-                batch_text += line
-                current_batch_size += 1
-                if current_batch_size == batch_size:
-                    max_word_length = max(process_line(
-                        batch_text, counter), max_word_length)
-                    print(">> Processed {} batch".format(current_batch))
-
-                    current_batch_size = 0
-                    current_batch += 1
-                    batch_text = ""
+            text = f.read().strip().lower()
+            max_word_length = max(process_line(
+                    text, counter), max_word_length)
+        print('Processed', train_file)
+                
     return counter, max_word_length
 
 
 def process_line(text, counter):
-    tokenized = nltk.tokenize.word_tokenize(text)
+    tokenized = [doc.text for doc in nlp(text)]
+    tokenized = [x for x in tokenized if len(x)<30]
     counted = collections.Counter(tokenized)
     max_word_length = max(map(len, tokenized))
     counter.update(counted)

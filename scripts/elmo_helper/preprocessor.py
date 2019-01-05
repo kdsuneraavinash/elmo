@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import random
-import nltk
+import spacy
 import os
 """
 @author: Sunera
@@ -9,7 +9,7 @@ import os
 print("# Initializing Preprocessor")
 
 
-def preprocess(directory, save_directory, notify_multiplier=100):
+def preprocess(nlp, directory, save_directory, notify_multiplier=100):
     print("WARNING: This won't randomize your data.")
 
     if not os.path.exists(save_directory):
@@ -24,7 +24,9 @@ def preprocess(directory, save_directory, notify_multiplier=100):
 
         line = f_read_file.read().lower()
 
-        tokenized = nltk.tokenize.sent_tokenize(line)
+        span = nlp(line)
+        tokenized = [''.join(token.string for token in sentence) for sentence in span.sents]
+        
         random.shuffle(tokenized)
         for sent in tokenized:
             f_write_file.write(sent.replace("\n", " ") + '\n')
