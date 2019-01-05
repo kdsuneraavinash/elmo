@@ -1,22 +1,18 @@
 # -*- coding: utf-8 -*-
 import collections
-import spacy
+import nltk
 import os
 """
 @author: Sunera
 """
 
-nlp = None
 print("# Initializing vocab file creater")
 
-
-def create_vocab_file(_nlp, source_directory='train', output_vocab_file='vocab.txt', batch_size=500):
+def create_vocab_file(source_directory='train', output_vocab_file='vocab.txt', batch_size=500):
     """
     Creates a vocab file using source directory.
     Batch size determines how much lines to load at once. (Does not affect much)
     """
-    global nlp
-    nlp = _nlp
     unsorted_words, max_word_length = count_words(source_directory, batch_size)
 
     all_counted = sort(unsorted_words)
@@ -48,7 +44,7 @@ def count_words(directory, batch_size):
 
 
 def process_line(text, counter):
-    tokenized = [doc.text for doc in nlp(text)]
+    tokenized = nltk.tokenize.casual.casual_tokenize(text)
     tokenized = [x for x in tokenized if len(x)<30]
     counted = collections.Counter(tokenized)
     max_word_length = max(map(len, tokenized))
