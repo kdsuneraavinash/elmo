@@ -1,5 +1,4 @@
 import os
-import elmo_helper
 print(r"""
  _______ _       ______           _______            _                   
 (_______) |     |  ___ \         (_______)          (_)                  
@@ -12,6 +11,11 @@ print(r"""
 
 """)
 
+
+import elmo_helper
+import spacy
+
+nlp = spacy.load('en')
 
 def input_digit(msg):
     v = ''
@@ -54,7 +58,7 @@ if mode % 2 == 0:
     input("Press enter to create the vocab file...\n>")
     train_files_location = input_path("Train files directory: ")
     vocab_file_location = 'vocab.txt'
-    max_word_length, n_train_tokens = elmo_helper.vocab.create_vocab_file(
+    max_word_length, n_train_tokens = elmo_helper.vocab.create_vocab_file(nlp, 
         source_directory=train_files_location, output_vocab_file=vocab_file_location, batch_size=1000)
     print("Vocab file creation completed...")
 
@@ -62,7 +66,7 @@ if mode % 3 == 0:
     input("Press enter to process the train files...\n>")
     if mode % 2 != 0:
         train_files_location = input_path("Train files directory: ")
-    elmo_helper.preprocess(directory=train_files_location,
+    elmo_helper.preprocess(nlp, directory=train_files_location,
                            save_directory=train_files_location + "_f", notify_multiplier=10)
     print("Processing the train files completed...")
 
@@ -87,7 +91,7 @@ if mode % 7 == 0:
     input("Press enter to process the test files...\n>")
     test_files_location = input_path("Test files directory: ")
     processed_test_files = test_files_location + "_f"
-    elmo_helper.preprocess(directory=test_files_location,
+    elmo_helper.preprocess(nlp, directory=test_files_location,
                            save_directory=processed_test_files, notify_multiplier=10)
     print("Processing the test files completed...")
 
