@@ -1,1 +1,11 @@
-python -m elmoformanylangs.biLM train -h
+python -m elmoformanylangs.biLM train \
+    --train_path twitter_750mb_en_data.txt \
+    --config_path config.json \
+    --model model \
+    --optimizer adam \
+    --lr 0.001 \
+    --lr_decay 0.8 \
+    --max_epoch 10 \
+    --max_sent_len 20 \
+    --max_vocab_size 150000 \
+    --min_count 3
