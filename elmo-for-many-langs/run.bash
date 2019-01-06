@@ -9,4 +9,5 @@ python -m elmoformanylangs.biLM train \
     --max_vocab_size 150000 \
     --min_count 3 \
     --max_epoch 10 \
-    --batch_size 32
+    --batch_size 32 \
+    --gpu 1
