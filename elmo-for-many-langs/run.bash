@@ -3,9 +3,10 @@ python -m elmoformanylangs.biLM train \
     --config_path config.json \
     --model model \
     --optimizer adam \
-    --lr 0.001 \
+    --lr 0.01 \
     --lr_decay 0.8 \
-    --max_epoch 10 \
     --max_sent_len 20 \
     --max_vocab_size 150000 \
-    --min_count 3
+    --min_count 3 \
+    --max_epoch 10 \
+    --batch_size 32
