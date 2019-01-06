@@ -1,3 +1,5 @@
 twitter_small/*
 
 **/*.pyc
+
+**/.vscode
