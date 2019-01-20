@@ -1,0 +1,69 @@
+download and install conda
+
+
+ACTIVATE CONDA IN $PATH
+export PATH=~/miniconda3/bin:$PATH
+
+CREATE PYTHON 3.6 VERSION ENVIRONMENT (ML)
+conda create -n ml python=3.6
+
+ACTIVATE ENVIRONMENT
+source activate ml
+
+MAKE SURE PIP VERSION IN PYTHON 3.6
+pip -V
+=================================
+Use script https://cloud.google.com/compute/docs/gpus/add-gpus#install-gpu-driver to install drivers
+
+
+FIRX WEIGHT DUMPING ERRORS
+===============================
+export CUDA_VISIBLE_DEVICES=1
+
+
+=================================================
+TRAINING
+==================================================
+
+01. Edit split.bash to include train path and result path
+
+02. bash bin/split.bash
+
+03. python bin/create_vocab.py --src train/ --load_files 50
+
+04. Copy result
+	Max word length = 25
+	Number of tokens = 1462904
+    If forgot, get the number of lines using
+	wc -l vocab.txt
+
+05. python bin/line.py --src train --dst train_f --shuffle False
+	**No need if already formatted**
+
+---- GPU --- need vocabulary.txt, options.json, train_f file ----
+Use zip and unzip commands and gsutil to port the files to the GPU machine
+
+
+06. git clone https://github.com/allenai/bilm-tf.git 
+
+07. python setup.py install
+
+08. Move some files to test directory **No Need if not expecting to test**
+
+09. python bin/train_elmo.py --save_dir save --log_dir log --vocab_file vocabulary.txt --train_prefix 'train_f/*' --batch_size 32 --n_gpus 1 --n_epochs 10 --n_train_tokens 1462904
+
+10. python bin/run_test.py --save_dir=save --vocab_file=vocab.txt --test_prefix=test/* --batch_size=128
+
+11. python bin/dump_weights.py --save_dir save --out weights.hdf5
+
+12. Copy options.json from save/ to root directory and change n_characters to 262 (From 261)
+
+13. Change file names in query.py and run it.
+
+
+
+
+
+
+
+
