@@ -5,3 +5,7 @@ twitter_small/*
 **/.vscode
 
 **/.idea
+
+swivel/vecs.bin
+swivel/vocab.txt
+

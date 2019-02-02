@@ -1,4 +1,4 @@
-# ELMo Model
+# Word Embedding (ELMo)
 
 ## Sources
 
@@ -138,4 +138,3 @@ $ export CUDA_VISIBLE_DEVICES=1
 
 10. Copy `options.json` from `save/` to root directory and change `n_characters` to 262 (From 261)
 11. Change file names in query.py and run it.
-
